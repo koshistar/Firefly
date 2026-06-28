@@ -43,12 +43,20 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 		// 桌面背景图片（支持单张或多张随机）
 		// desktop: "assets/images/DesktopWallpaper/d1.avif",
 		desktop: [
-			"assets/images/DesktopWallpaper/d1.avif",
-			"assets/images/DesktopWallpaper/d2.avif",
-			"assets/images/DesktopWallpaper/d3.avif",
-			"assets/images/DesktopWallpaper/d4.avif",
-			"assets/images/DesktopWallpaper/d5.avif",
-			"assets/images/DesktopWallpaper/d6.avif",
+			// "assets/images/DesktopWallpaper/d1.avif",
+			// "assets/images/DesktopWallpaper/d2.avif",
+			// "assets/images/DesktopWallpaper/d3.avif",
+			// "assets/images/DesktopWallpaper/d4.avif",
+			// "assets/images/DesktopWallpaper/d5.avif",
+			// "assets/images/DesktopWallpaper/d6.avif",
+			"assets/images/DesktopWallpaper/31A.jpg",
+			"assets/images/DesktopWallpaper/31B.jpg",
+			"assets/images/DesktopWallpaper/31C.jpg",
+			"assets/images/DesktopWallpaper/31D.jpg",
+			"assets/images/DesktopWallpaper/31E.jpg",
+			"assets/images/DesktopWallpaper/31F.jpg",
+			"assets/images/DesktopWallpaper/31X.jpg",
+			"assets/images/DesktopWallpaper/30G.jpg",
 		],
 		// 移动背景图片（支持单张或多张随机）
 		// mobile: "assets/images/MobileWallpaper/m1.avif",
@@ -81,17 +89,17 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 			// 是否允许用户通过控制面板切换横幅标题显示
 			switchable: true,
 			// 主页横幅主标题
-			title: "Lovely firefly!",
+			title: "コシ様　最強",
 			// 主页横幅主标题字体大小
 			titleSize: "3.8rem",
 			// 主页横幅副标题
 			subtitle: [
-				"In Reddened Chrysalis, I Once Rest",
-				"From Shattered Sky, I Free Fall",
-				"Amidst Silenced Stars, I Deep Sleep",
-				"Upon Lighted Fyrefly, I Soon Gaze",
-				"From Undreamt Night, I Thence Shine",
-				"In Finalized Morrow, I Full Bloom",
+				"对生命充满绝望，究竟什么样的生活值得我活着",
+				"什么也无法舍弃的人，就什么也无法得到",
+				"能哭的地方，只有厕所与父亲的怀里",
+				"不是很精彩呢，但我想继续听下去",
+				"举世皆浊我独清，众人皆醉我独醒",
+				"为了能够再一次爱上这个世界",
 			],
 			// 主页横幅副标题字体大小
 			subtitleSize: "1.5rem",
