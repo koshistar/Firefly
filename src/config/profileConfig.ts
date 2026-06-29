@@ -12,7 +12,7 @@ export const profileConfig: ProfileConfig = {
 	name: "KoShi",
 
 	// 个人签名
-	bio: "Ciallo～(∠・ω< )⌒★,コシ様だよ～",
+	bio: "Ciallo～(∠・ω< )⌒★,コシだよ～",
 
 	// 链接配置
 	// 已经预装的图标集：fa7-brands，fa7-regular，fa7-solid，material-symbols，simple-icons
@@ -25,6 +25,12 @@ export const profileConfig: ProfileConfig = {
 			name: "qq",
 			icon: "fa7-brands:qq",
 			url: "https://qm.qq.com/q/Cn0J88EBCS",
+			showName: false,
+		},
+		{
+			name: "qq",
+			icon: "fa7-brands:qq",
+			url: "https://qm.qq.com/q/CIAkaeHGLK",
 			showName: false,
 		},
 		{
