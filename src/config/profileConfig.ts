@@ -40,6 +40,11 @@ export const profileConfig: ProfileConfig = {
 			showName: false,
 		},
 		{
+      		name: "Bilibli",
+      		icon: "fa6-brands:bilibili",
+      		url: "https://space.bilibili.com/351202085",
+    	},
+		{
 			name: "Email",
 			icon: "fa7-solid:envelope",
 			url: "37220232203780@stu.xmu.edu.cn",
