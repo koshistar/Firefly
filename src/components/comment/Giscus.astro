@@ -10,55 +10,54 @@ const lightTheme = "light";
 const darkTheme = "dark";
 ---
 
-<!-- Giscus 官方脚本加载方式，参考：https://giscus.app/ -->
-<script
-	is:inline
-	src="https://giscus.app/client.js"
-	data-repo={giscus.repo}
-	data-repo-id={giscus.repoId}
-	data-category={giscus.category}
-	data-category-id={giscus.categoryId}
-	data-mapping={giscus.mapping}
-	data-strict={giscus.strict}
-	data-reactions-enabled={giscus.reactionsEnabled}
-	data-emit-metadata={giscus.emitMetadata}
-	data-input-position={giscus.inputPosition}
-	data-theme={lightTheme}
-	data-lang={giscus.lang}
-	data-loading={giscus.loading}
-	crossorigin="anonymous"
-	async
-></script>
+<script is:inline type="module" src="https://esm.sh/giscus"></script>
 
-<div class="giscus"></div>
+<!-- 
+  Giscus 官方Web Component用法，兼容Astro静态输出，无需import包，无需NPM依赖！
+  参考：https://giscus.app/ 详情配置说明
+-->
+<giscus-widget
+  id="comments"
+  repo={giscus.repo}
+  repoId={giscus.repoId}
+  category={giscus.category}
+  categoryId={giscus.categoryId}
+  mapping={giscus.mapping}
+  strict={giscus.strict}
+  reactionsEnabled={giscus.reactionsEnabled}
+  emitMetadata={giscus.emitMetadata}
+  inputPosition={giscus.inputPosition}
+  theme={lightTheme}
+  lang={giscus.lang}
+  loading={giscus.loading}
+/>
 
 <script is:inline define:vars={{ lightTheme, darkTheme }}>
-	function updateGiscusTheme() {
-		const isDark = document.documentElement.classList.contains("dark");
-		const theme = isDark ? darkTheme : lightTheme;
-		const iframe = document.querySelector(".giscus iframe");
-		if (!iframe) return;
-		iframe.contentWindow?.postMessage({ giscus: { setConfig: { theme } } }, "https://giscus.app");
-	}
+  function updateGiscusTheme() {
+    const isDark = document.documentElement.classList.contains('dark');
+    const theme = isDark ? darkTheme : lightTheme;
+    const widget = document.querySelector('giscus-widget');
+    if (widget) {
+      widget.setAttribute('theme', theme);
+    }
+  }
 
-	// 等待 giscus 加载完成后更新主题
-	window.addEventListener("message", (event) => {
-		if (event.origin !== "https://giscus.app") return;
-		const data = event.data;
-		if (data?.giscus && typeof data.giscus === "object") {
-			updateGiscusTheme();
-		}
-	});
+  // Initial update
+  updateGiscusTheme();
 
-	// 清理之前的 observer
-	if (window.giscusThemeObserver) {
-		window.giscusThemeObserver.disconnect();
-	}
+  // Clean up previous observer if exists
+  if (window.giscusThemeObserver) {
+    window.giscusThemeObserver.disconnect();
+  }
 
-	// 创建新的 observer 监听主题变化
-	window.giscusThemeObserver = new MutationObserver(() => {
-		updateGiscusTheme();
-	});
+  // Create new observer
+  window.giscusThemeObserver = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+        updateGiscusTheme();
+      }
+    });
+  });
 
-	window.giscusThemeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+  window.giscusThemeObserver.observe(document.documentElement, { attributes: true });
 </script>
