@@ -77,7 +77,16 @@ Antialiasing = Limiting, then repeating
 Antialiasing By Supersampling(MSAA)  
 FXAA(Fast Approximate AA)  
 TAA(Temporal AA)  
+  
+Z-buffering  
 
+## Shading  
+### Blinn-Phong Reflectance Model  
+- Inputs: Viewer direction(v), Surface normal(n), Light direction(l), Surface parameters(color, shininess, ...)
+
+Diffuse Reflection  
+- Lamberts's cosine law  
+- $ L_d = k_d(\frac{I}{r^2})max(0,\bold n \cdot \bold l) $
 
 # Curves and Mesh
 
