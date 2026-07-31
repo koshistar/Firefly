@@ -84,11 +84,81 @@ Z-buffering
 ### Blinn-Phong Reflectance Model  
 - Inputs: Viewer direction(v), Surface normal(n), Light direction(l), Surface parameters(color, shininess, ...)
 
+$ L = L_a + L_d + L_s = k_aI_a + k_d(\frac{I}{r^2})max(0,\bold n \cdot \bold l) + k_s(\frac{I}{r^2})max(0,\bold n \cdot \bold h)^p $  
+  
 Diffuse Reflection  
 - Lamberts's cosine law  
 - $ L_d = k_d(\frac{I}{r^2})max(0,\bold n \cdot \bold l) $
+  
+Specular Term  
+- 半程向量 $ \bold h = bisector(\bold v, \bold l)= \frac{\bold l + \bold v}{\|\bold l + \bold v\|} $  
+- $ L_s = k_s(\frac{I}{r^2})max(0,\cos \alpha)^p = k_s(\frac{I}{r^2})max(0,\bold n \cdot \bold h)^p $  
 
+Ambient Term  
+- $ L_a = k_aI_a $  
+
+### Shading Frequency  
+Shading freqncy: Face Vertex Pixel   
+Shading type: Flat Gouraud Phong  
+Defining Per-Vertex Normal Vectors  
+- $ N_v = \frac{\varSigma_i N_i}{\| \varSigma_i \cdot N_i \|} $
+
+Defining Per-Pixel Normal Vectors  
+
+### Graphics(Real-time Rendering) Pipeline  
+Application -> Vertex Proceessing -> Trangle Processing -> Rasterization -> Fragment Processing -> Framebuffer Operations -> Display  
+
+### Texture Mapping  
+
+Interpolation Across Triangles: Barycentric Coordinates(重心坐标)  
+- $ (x,y) = \alpha A + \beta B + \gamma C $
+- $ \alpha + \beta + \gamma = 1 $
+- $ (\alpha,\beta,\gamma) = (\frac{1}{3},\frac{1}{3},\frac{1}{3})$
+
+Texture Magnification  
+Nearest Neighbor Interpolation  
+Bilinear Interpolation  
+Bicubic Interpolation  
+
+Mipmap  
+Trilinear Interpolation  
+
+Anisotropic Filtering  
+EWA filtering  
+
+Applications of textures  
+Environment Lighting  
+Bump Mapping  
+Displacement Mapping  
+...  
 # Curves and Mesh
+## Geometry  
+Constructive Solid Geometry(CSG)  
+Distance Functions  
+Fractals  
+
+### Curves  
+Bezier Curves  
+de Casteljau Algorithm  
+- $ b_0^1(t) = (1-t)b_0 + tb_1 $  
+- $ b_1^1(t) = (1-t)b_1 + tb_2 $  
+- $ b_0^2(t) = (1-t)b_0^1 + tb_1^1 $  
+- $ b^n(t) = b_0^n(t) = \Sigma_{j=0}^n b_jB_j^n(t) $
+- Bernstein polynomials $ B_i^n(t) = \binom{n}{i}t^i(1-t)^{n-i} $  
+
+Properties of Bezier Curves  
+- Interpolates endpoints
+- Tangent to end segments  
+- Affine transformation property  
+- Convex hull property  
+
+Other types of splines  
+B-Splines  
+
+### Surfaces  
+Bezier Surfaces  
+Mesh Operations: Geometry Processing  
+
 
 # Ray Tracing
 
