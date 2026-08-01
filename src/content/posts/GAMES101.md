@@ -159,7 +159,31 @@ B-Splines
 Bezier Surfaces  
 Mesh Operations: Geometry Processing  
 
+subdivision  
+Loop Subdivision  
+Catmull-Clark Subdivision(General Mesh)  
 
+simplification  
+Collapsing An Edge  
+
+Shadows  
+Shadow Mapping  
 # Ray Tracing
+Ray Equation  
+- Ray is defined by its origin and a direction vector  
+- $ \bold r(t) = \bold o + t\bold d  , 0 \le t \lt \infty $
+- Sphere: $ \bold p: {(\bold p- \bold c)}^2 - R^2 = 0 $  
+- General implicit surface: $ \bold p: f(\bold p) = 0, f(\bold o + t\bold d) = 0 $  
 
+Plane Equation  
+- Plane is defined by normal vector and a point on plane  
+- $ \bold p: (\bold p - \bold p')\cdot \bold N = 0 $  
+
+Moller Trumbore Algorithm  
+- $ \bold O + t \bold D = (1-b_1-b_2) \bold P_0 + b_1 \bold P_1 + b_2 \bold P_2 $  
+- $ \begin{pmatrix} t \\ b_1 \\ b_2 \end{pmatrix} = \frac{1}{\bold S_1 \cdot \bold E_1} \begin{pmatrix} \bold S_2 \cdot \bold E_2 \\ \bold S_1 \cdot \bold S \\ \bold S_2 \cdot \bold D \end{pmatrix}, Where \bold E_1 = \bold P_1 - \bold P_0, \bold E_2 = \bold P_2 - \bold P_0, \bold S = \bold O - \bold P_0, \bold S_1 = \bold D \times \bold E_2, \bold S_2 = \bold S \times \bold E_1 $  
+
+Accelerating Ray-Surface Intersection  
+Bounding Volumes  
+- AABB(Axis-Aligned Bounding Box/轴对齐包围盒)  
 # Animation / Simulation
