@@ -5,7 +5,7 @@ pinned: false
 description: 计算机图形学基础
 tags: [学习记录]
 category: 基础知识
-draft: true
+draft: false
 ---
 
 # Rasterization
@@ -186,4 +186,194 @@ Moller Trumbore Algorithm
 Accelerating Ray-Surface Intersection  
 Bounding Volumes  
 - AABB(Axis-Aligned Bounding Box/轴对齐包围盒)  
+
+Spatial Partitioning  
+- Octree  
+- KD-Tree  
+- BSP-Tree  
+
+Bounding Volume Hierarchy(BVH)  
+``` 
+Intersect(Ray ray, BVH node)
+{
+    if(ray misses node.bbox) return;
+
+    if(node is a leaf node)
+        test intersection with all objs;
+        return closest intersection;
+
+    hit1=Intersect(ray, node.child1);
+    hit2=Intersect(ray, node.child2);
+    return the closer of hit1, hit2;
+}
+```
+
+## Basic Radiometry(辐射度量学)  
+Radiant Energy and Flux(Power)  
+- Definition: Radiant energy: $ Q[J=Joule] $; Radiant flux(Power): $ \Phi \equiv \frac{dQ}{dt}[W=Watt][lm=lumen] $
+
+Radiant Intensity  
+- $ I(\omega) \equiv \frac{d\Phi}{d\omega}; [\frac{W}{sr}][\frac{lm}{sr}=cd=candela] $
+- power per solid angle  
+- Angles and Solid Angles: Angle: $ \theta = \frac{l}{r} $; Solid angle: $ \Omega = \frac{A}{r^2} $
+- Isotropic Point Source: $ \Phi = \int_{S^2} I d\omega = 4\pi I; I = \frac{\Phi}{4\pi}$
+
+Irradiance  
+- $ E(x) = \frac{d\Phi(x)}{dA};[\frac{W}{m^2}][\frac{lm}{m^2} = lux] $  
+- power per projected unit area  
+
+Radiance  
+- $ L(p,\omega) = \frac{d^2\Phi(p,\omega)}{d\omega dA\cos \theta};[\frac{W}{sr.m^2}][\frac{cd}{m^2} = \frac{lm}{sr.m^2} = nit] $
+- Irradiance per solid angle / Intensity per projected unit area
+- Incident Radiance: $ L(p,\omega) = \frac{dE(p)}{d\omega \cos\theta} $ ; Exiting Radiance: $ L(p,\omega) = \frac{dI(p,\omega)}{dA\cos\theta} $
+- $ dE(p,\omega)=L_i(p,\omega)cos\theta d\omega $; $ E(p) = \int_{H^2} L_i(p,\omega)cos\theta d\omega $  
+
+## Bidirectional Refletance Distribution Function (BRDF)  
+Reflection at a Point  
+- Differential irradiance incoming: $ dE(\omega_i) = L(\omega_i)\cos \theta_i d\omega_i $
+- Differential radiance exiting (due to $dE(\omega_i)$): $dL_r(\omega_r)$  
+- BRDF：$ f_r(\omega_i \rightarrow \omega_r) = \frac{dL_r(\omega_r)}{dE_i(\omega_i)}=\frac{dL_r(\omega_r)}{L_i(\omega_i)\cos\theta_i d\omega_i};[\frac{l}{sr}] $  
+
+The Reflection Equation  
+- $ L_r(p,\omega_r)=\int_{H^2} f_r(p,\omega_i \rightarrow \omega_r)L_i(p,\omega_i)cos\theta_i d\omega_i $  
+
+The Rendering Equation  
+- $ L_o(p,\omega_o) = L_e(p,\omega_o) + \int_{\Omega+} L_i(p,\omega_i)f_r(p,\omega_i, \omega_o)(n\cdot\omega_i)d\omega_i $
+
+## Monte Carlo Integration  
+- $ \int f(x)dx = \frac{1}{N}\sum_{i=1}^N \frac{f(X_i)}{p(X_i)}, X_i \sim p(x) $  
+
+## Path Tracing  
+- A Simple Monte Carlo Solution:$ L_o(p,\omega_o) = \int_{\Omega+} L_i(p,\omega_i)f_r(p,\omega_i, \omega_o)(n\cdot\omega_i)d\omega_i \approx \frac{1}{N}\sum_{i=1}^N \frac{L_i(p,\omega_i)f_r(p,\omega_i, \omega_o)(n\cdot\omega_i)}{p(\omega_i)}$
+```
+shade(p,wo)
+    Randomly choose N directions wi~pdf
+    Lo=0.0
+    For each wi
+        Trace a ray r(p,wi)
+        If ray r hit the light
+            Lo+=(1/N)*L_i*f_r*cosine/pdf(wi)
+        Elese If ray r hit an object at q
+            Lo+=(1/N)*shade(q,-wi)*f_r*cosine/pdf(wi)
+    Return Lo
+```
+```
+shade(p,wo)
+    Randomly choose ONE direction wi~pdf(w)
+    Trace a ray r(p,wi)
+    If ray r hit the light
+        Return L_i*f_r*cosine/pdf(wi)
+    Elese If ray r hit an object at q
+        Return shade(q,-wi)*f_r*cosine/pdf(wi)
+```
+
+Ray Generation
+```
+ray_generation(camPos,pixel)
+    Uniformly choose N sample positions within the pixel
+    pixel_radiance=0.0
+    For each sample in the pixel 
+        Shoot a ray r(camPos,cam_to_sample)
+        If ray r hit the scene at p
+            pixel_radiance+=1/N*shade(p,sample_to_cam)
+    Return pixel_radiance
+```
+Russian Roulette(RR)  
+- $ E=P*(Lo/P)+(1-P)*0=Lo $
+```
+shade(p,wo)
+    Manually specify a probability P_RR 
+    Randomly select ksi in a uniform dist. in [0,1]
+    If (ksi>P_RR) return 0.0;
+    Randomly choose ONE direction wi~pdf(w)
+    Trace a ray r(p,wi)
+    If ray r hit the light
+        Return L_i*f_r*cosine/pdf(wi)/P_RR
+    Elese If ray r hit an object at q
+        Return shade(q,-wi)*f_r*cosine/pdf(wi)/P_RR
+```
+Sampling the light  
+```
+shade(p,wo)
+    # Contribute from the light source 
+    Uniformly sample the light ar x' (pdf_light=1/A)
+    L_dir = L_i*f_r*cos theta * cos theta' / |x'-p|^2 / pdf_light
+
+    #Contribution from other refletors  
+    L_indir=0.0
+    Test Russian Roulette with probability P_RR
+    Uniformly sample the hemisphere toward wi (pdf_hemi = 1/2pi)
+    Trace a ray r(p,wi)
+    If ray r hit a non-emitting object at q
+        L_indir=shade(q,-wi)*f_r*cos theta / pdf_hemi / P_RR
+    Return L_dir+L_indir
+```
+
+## Materials and Apperances  
+Materials=BRDF  
+Diffuse/Lambertian material  
+- $ L_o(\omega_o)=\int_{H^2}f_r L_i(\omega_i)\cos \theta_i d\omega_i=f_r L_i \int_{H^2}\cos \theta_i d\omega_i = \pi f_r L_i$
+- $ f_r=\frac{\rho}{\pi}, \rho - albedo(color) $  
+
+Glossy material  
+Ideal reflective/refractive material  
+Fresnel Reflection / Term  
+Microfacet Material  
+- $ f(i,o)=\frac{F(i,h)G(i,o,h)D(h)}{4(n,i)(n,o)} $
+- F(i,h)- Fresnel term; G(i,o,h)- shadowing-masking term; D(h)- distribution of normals  
+
+Isotropic/Anisotropic materials  
+Properties of BRDFS  
+- Non-negetivity $ f_r(\omega_i \rightarrow \omega_r) \geq 0 $
+- Linearity $ L_r(p,\omega_r)=\int_{H^2}f_r(p,\omega_i \rightarrow \omega_r)L_i(p,\omega_i)d\omega_i $ 
+- Reciprocity principle $ f_r(\omega_i \rightarrow \omega_r) = f_r(\omega_r \rightarrow \omega_i) $
+- Energy conservation $ \forall \omega_r \int_{H_2}f_r(\omega_i \rightarrow \omega_r)\cos \theta_i d\omega_i \leq 1  $ 
+- Isotropic vs. Anisotropic  
+-- If isotropic, $ f_r(\theta_i,\Phi_i;\theta_r,\Phi_r)=f_r(\theta_i,\theta_r,\Phi_r-\Phi_i) $
+-- Then, from reciprocity, $ f_r(\theta_i,\theta_r,\Phi_r-\Phi_i)=f_r(\theta_r,\theta_i,\Phi_i-\Phi_r)=f_r(\theta_i,\theta_r,|\Phi_r-\Phi_i|) $
+
+Measuring BRDFS
+
+## Advanced Tropics in Rendering
+Advanced Light Transport  
+- Unbiased light transport methods  
+-- Bidirectional path tracing(DSPT)  
+-- Metropolis light transport(MLT)  
+- Biased light transport methods  
+-- Photon mapping  
+-- Vertex connection and merging(VCM)  
+- Instant radiosity(VPL/many light methods)  
+
+Advanced Appearance Modeling  
+- Non-surface models  
+-- Prticipating Media  
+-- Hair Appearance: Kajiya-Kay Model; Marschner Model  
+-- Fur Appearance: Double Cylinder Model  
+-- Granular Material  
+- Surface Models  
+-- Translucent Material: BSSRDF  
+-- Cloth  
+-- Detailed Appearance: Motivation  
+
+## Others  
+Pinhole Image Formation  
+Filed of View(FOV)  
+Exposure: Aperture, Shutter, Gain(ISO)  
+Thin Lens Approximation  
+Defocus Blur  
+Ray Tracing Ideal Thin Lenses  
+Light Field/Lumigraph  
+Physical Basis of Color  
+Metamerism  
+Color Space  
 # Animation / Simulation
+Keyframe Animation  
+Physical Simulation(质点弹簧系统)  
+Particle systems  
+Forward Kinematics  
+Inverse Kinematics  
+Rigging  
+Motion Capture  
+Single particle simulation  
+Rigid Body Simulation  
+Fluid Simulation  

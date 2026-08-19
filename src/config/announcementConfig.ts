@@ -5,14 +5,14 @@ export const announcementConfig: AnnouncementConfig = {
 	title: "公告",
 
 	// 公告内容
-	content: "初建博客，夜露死苦",
+	content: "有没有不开空调的自习室啊",
 
 	// 是否允许用户关闭公告
 	closable: true,
 
 	link: {
 		// 启用链接
-		enable: true,
+		enable: false,
 		// 链接文本
 		text: "了解更多",
 		// 链接 URL
