@@ -143,7 +143,7 @@ $$
 - 任何一个球面坐标的函数可以用多个球谐函数来近似  
 - $f(t)\approx \sum_{l}^{} \sum_{m=-l}^{l} c_l^my_l^m(\theta,\Phi)$
 - 其中，$c_l^m$各项系数 $y_l^m$是基函数  
-![看不懂的球谐函数](.\images\SphericalHarmonics.png)
+![看不懂的球谐函数](./images/SphericalHarmonics.png)
 ![像素的颜色](./images/PixpelColor.png)
 
 参考视频：[【较真系列】讲人话-3d gaussian splatting全解(原理+代码+公式)【4】 高性能渲染与机器学习](https://www.bilibili.com/video/BV1rJ4m1g7Un?vd_source=368035710b365f19a8d10ff50ad5857b)
